@@ -6,14 +6,23 @@ Repositório criado para estudar Go (Golang).
 
 - Variáveis
 - Structs
-- Interfaces
 - Ponteiros
 - Concorrência
 - APIs REST
-- WebSockets
 
 ## Projetos
 
 - API REST
-- Chat TCP
-- CLI Todo
+
+## Tópicos para estudo
+
+### ORMs
+
+1. `database/sql`
+2. `sqlx`
+3. Escolher entre:
+   - `GORM`
+   - `Bun`
+4. Mais pra frente estudar:
+   - `Ent`
+   - `sqlc`
