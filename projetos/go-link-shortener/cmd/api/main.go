@@ -26,9 +26,17 @@ func main() {
 	}
 	defer dbPool.Close()
 
-	// 3. Monta as dependências
+	// 3. Inicia a conexão com o Redis
+	redisClient, err := database.NewRedisClient(ctx, cfg.RedisURL)
+	if err != nil {
+		log.Fatalf("Erro ao conectar no Redis: %v", err)
+	}
+	defer redisClient.Close()
+
+	// 4. Monta as dependências
 	repo := shortener.NewRepository(dbPool)
-	svc := shortener.NewUseCase(repo)
+	cacheRepo := shortener.NewRedisRepository(redisClient)
+	svc := shortener.NewUseCase(repo, cacheRepo)
 	handler := shortener.NewHandler(svc)
 
 	// 4. Configura o Chi

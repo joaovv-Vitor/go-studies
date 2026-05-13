@@ -13,6 +13,7 @@ var ErrURLNotFound = errors.New("url não encontrada")
 // repository (com letra minúscula) é a nossa implementação concreta e privada.
 type repository struct {
 	pool *pgxpool.Pool
+	
 }
 
 // NewRepository retorna a interface Repository definida no seu model.go.
@@ -58,3 +59,4 @@ func (r *repository) GetByCode(ctx context.Context, code string) (*URL, error) {
 
 	return &url, nil
 }
+

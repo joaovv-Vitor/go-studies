@@ -13,8 +13,15 @@ services:
       - "5432:5432"
     volumes:
       - shortener_pg_data:/var/lib/postgresql/data
-      # Mapeia o arquivo SQL para rodar automaticamente na primeira vez que o banco subir
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Novo serviço de Cache
+  redis:
+    image: redis:7-alpine
+    container_name: shortener_cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
 
 volumes:
   shortener_pg_data:

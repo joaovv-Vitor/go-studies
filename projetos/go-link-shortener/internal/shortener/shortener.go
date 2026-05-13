@@ -25,8 +25,12 @@ type Repository interface {
 	GetByCode(ctx context.Context, code string) (*URL, error)
 }
 
-
 type UseCase interface {
 	CreateShortURL(ctx context.Context, originalURL string) (*URL, error)
 	GetOriginalURL(ctx context.Context, code string) (string, error)
+}
+
+type CacheRepository interface {
+	Set(ctx context.Context, key string, value string, expiration time.Duration) error
+	Get(ctx context.Context, key string) (string, error)
 }

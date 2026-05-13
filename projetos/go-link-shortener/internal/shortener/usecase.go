@@ -9,10 +9,11 @@ import (
 
 type useCase struct {
 	repo Repository
+	cache CacheRepository
 }
 
-func NewUseCase(repo Repository) UseCase {
-	return &useCase{repo: repo}
+func NewUseCase(repo Repository, cache CacheRepository) UseCase {
+	return &useCase{repo: repo, cache: cache}
 }
 
 func (u *useCase) CreateShortURL(ctx context.Context, originalURL string) (*URL, error) {
@@ -53,10 +54,24 @@ func (u *useCase) CreateShortURL(ctx context.Context, originalURL string) (*URL,
 }
 
 func (u *useCase) GetOriginalURL(ctx context.Context, code string) (string, error) {
+	
+
+	//cache hit
+	cacheURL, err := u.cache.Get(ctx, code)
+	if err == nil{
+		return cacheURL, nil
+	}
+
+
+	//cache miss
 	url, err := u.repo.GetByCode(ctx, code)
 	if err != nil {
 		return "", err
 	}
+
+	//time do cache
+	expiration := 24 * time.Hour
+	_ = u.cache.Set(ctx, code, url.OriginalURL, expiration)
 	
 	return url.OriginalURL, nil
 }

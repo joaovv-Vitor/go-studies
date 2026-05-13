@@ -11,6 +11,7 @@ import (
 type Config struct {
 	DatabaseURL string
 	Port        string
+	RedisURL    string
 }
 
 // Load lê o arquivo .env e popula a struct de configuração
@@ -24,6 +25,7 @@ func Load() *Config {
 	cfg := &Config{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		Port:        os.Getenv("PORT"),
+		RedisURL:    os.Getenv("REDIS_URL"),
 	}
 
 	// Validações de variáveis obrigatórias
